@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 
 const priceIds: Record<string, string | undefined> = {
   STRIPE_PRICE_TIER1: process.env.STRIPE_PRICE_TIER1,
@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
     // Determine if this is a subscription or one-time payment
     const isSubscription = priceId === "STRIPE_PRICE_TIER2";
 
+    const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
       mode: isSubscription ? "subscription" : "payment",
       payment_method_types: ["card"],

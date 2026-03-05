@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { Resend } from "resend";
 import Stripe from "stripe";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -19,6 +17,7 @@ export async function POST(request: NextRequest) {
   let event: Stripe.Event;
 
   try {
+    const stripe = getStripe();
     event = stripe.webhooks.constructEvent(
       body,
       signature,
@@ -40,6 +39,7 @@ export async function POST(request: NextRequest) {
 
     if (customerEmail) {
       try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
           from: `TaxLLC <${process.env.CONTACT_EMAIL || "noreply@yourdomain.com"}>`,
           to: customerEmail,
