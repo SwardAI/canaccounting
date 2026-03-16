@@ -55,7 +55,7 @@ export function TrustedBy() {
               style={{ color: "var(--color-ed-charcoal-light)" }}
             >
               From e-commerce brands to consulting firms, business owners rely
-              on CanTax for accurate, affordable LLC tax returns.
+              on UnitedTax for accurate, affordable LLC tax returns.
             </p>
             <ul className="space-y-3">
               {bullets.map((text) => (

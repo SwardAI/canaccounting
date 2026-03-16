@@ -16,7 +16,7 @@ const testimonials = [
   },
   {
     quote:
-      "As a non-resident LLC owner, US taxes felt overwhelming. CanTax handled Form 5472, Form 1120 — everything. Incredibly smooth process.",
+      "As a non-resident LLC owner, US taxes felt overwhelming. UnitedTax handled Form 5472, Form 1120 — everything. Incredibly smooth process.",
     name: "Foreign-owned LLC, agency",
     image: "/images/testimonials/jessica.png",
   },

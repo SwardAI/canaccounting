@@ -15,7 +15,7 @@ export function Footer() {
         <div className="border-t border-gray-200 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-base text-gray-600">
             <p>
-              &copy; {new Date().getFullYear()} CanTax. All rights reserved.
+              &copy; {new Date().getFullYear()} UnitedTax. All rights reserved.
             </p>
             <div className="flex gap-6 mt-4 md:mt-0">
               <Link href="/privacy" className="hover:text-gray-900">

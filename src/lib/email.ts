@@ -9,8 +9,8 @@ function getResend() {
   return new Resend(key);
 }
 
-const FROM = process.env.EMAIL_FROM || "UnitedTax <noreply@unitedtax.us>";
 const CAN_EMAIL = process.env.ADMIN_EMAIL || "can@unitedtax.us";
+const FROM = `UnitedTax <${CAN_EMAIL}>`;
 
 // Email 1: Automatic payment confirmation (from noreply)
 export async function sendPurchaseConfirmation(
