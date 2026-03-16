@@ -73,7 +73,7 @@ export function HowItWorks() {
                   {step.title}
                 </h3>
                 <p
-                  className="text-sm leading-relaxed"
+                  className="text-base leading-relaxed"
                   style={{ color: "var(--color-ed-charcoal-light)" }}
                 >
                   {step.description}

@@ -104,7 +104,7 @@ export function Testimonials() {
                   />
                 </div>
                 <div
-                  className="font-semibold text-sm"
+                  className="font-semibold text-base"
                   style={{ color: "var(--color-ed-charcoal)" }}
                 >
                   {t.name}

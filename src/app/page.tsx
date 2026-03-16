@@ -5,6 +5,7 @@ import { Stats } from "@/components/landing/Stats";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { ExpertReview } from "@/components/landing/ExpertReview";
 import { Benefits } from "@/components/landing/Benefits";
+import { RiskWarning } from "@/components/landing/RiskWarning";
 import { Pricing } from "@/components/landing/Pricing";
 import { TrustedBy } from "@/components/landing/TrustedBy";
 import { Testimonials } from "@/components/landing/Testimonials";
@@ -18,6 +19,7 @@ export default function Home() {
         <Hero />
         <Stats />
         <HowItWorks />
+        <RiskWarning />
         <ExpertReview />
         <Benefits />
         <TrustedBy />

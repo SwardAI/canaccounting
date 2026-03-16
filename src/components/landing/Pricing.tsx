@@ -137,7 +137,7 @@ export function Pricing() {
                   {plan.name}
                 </h3>
                 <p
-                  className="text-sm mb-6"
+                  className="text-base mb-6"
                   style={{
                     color: plan.highlight
                       ? "var(--color-ed-sage-light)"
@@ -233,7 +233,7 @@ export function Pricing() {
                         />
                       </div>
                       <span
-                        className="text-sm"
+                        className="text-base"
                         style={{
                           color: plan.highlight
                             ? "var(--color-ed-sage-light)"
@@ -249,7 +249,7 @@ export function Pricing() {
                 {/* CTA Button */}
                 <Link
                   href="/qualify"
-                  className="inline-flex items-center justify-center w-full py-3 text-sm font-semibold transition-all duration-300"
+                  className="inline-flex items-center justify-center w-full py-3 text-base font-semibold transition-all duration-300"
                   style={
                     plan.highlight
                       ? {

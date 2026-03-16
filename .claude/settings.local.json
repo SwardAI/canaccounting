@@ -29,7 +29,8 @@
       "Bash(cp /tmp/cranston-serif.ttf public/fonts/serif.ttf)",
       "Bash(cp /tmp/cranston-sans.ttf public/fonts/sans.ttf)",
       "Bash(npx mammoth:*)",
-      "Bash(npx docx2txt:*)"
+      "Bash(npx docx2txt:*)",
+      "WebSearch"
     ]
   }
 }

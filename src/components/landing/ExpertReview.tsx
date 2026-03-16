@@ -74,7 +74,7 @@ export function ExpertReview() {
                     />
                   </div>
                   <span
-                    className="text-sm"
+                    className="text-base"
                     style={{ color: "var(--color-ed-charcoal)" }}
                   >
                     {text}

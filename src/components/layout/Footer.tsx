@@ -8,12 +8,12 @@ export function Footer() {
           <div className="flex items-center gap-3 mb-4">
             <span className="text-xl font-bold text-black">Company Logo</span>
           </div>
-          <p className="text-sm text-gray-600 max-w-md">
+          <p className="text-base text-gray-600 max-w-md">
             Your LLC taxes. Done right.
           </p>
         </div>
         <div className="border-t border-gray-200 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
+          <div className="flex flex-col md:flex-row justify-between items-center text-base text-gray-600">
             <p>
               &copy; {new Date().getFullYear()} CanTax. All rights reserved.
             </p>

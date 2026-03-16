@@ -44,7 +44,7 @@ export function Benefits() {
                         <h3 className="text-lg font-semibold text-gray-900 mb-2">
                           {b.title}
                         </h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">
+                        <p className="text-base text-gray-600 leading-relaxed">
                           {b.description}
                         </p>
                       </div>
