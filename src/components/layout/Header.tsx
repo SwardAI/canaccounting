@@ -20,7 +20,7 @@ export function Header() {
         <div className="flex items-center justify-between py-2.5">
           {/* Logo */}
           <Link href="/" className="text-xl font-bold text-black">
-            Company Logo
+            United<span style={{ color: "var(--color-ed-forest)" }}>Tax</span>
           </Link>
 
           {/* CTA button — fades in on scroll, like Cranston */}

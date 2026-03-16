@@ -6,7 +6,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-xl font-bold text-black">Company Logo</span>
+            <span className="text-xl font-bold text-black">United<span style={{ color: "var(--color-ed-forest)" }}>Tax</span></span>
           </div>
           <p className="text-base text-gray-600 max-w-md">
             Your LLC taxes. Done right.
