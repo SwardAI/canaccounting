@@ -24,7 +24,7 @@ export function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-normal leading-tight mb-8 text-gray-900 font-serif">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal leading-tight mb-8 text-gray-900 font-serif">
             LLC Tax Return? Just $300.
           </h1>
 

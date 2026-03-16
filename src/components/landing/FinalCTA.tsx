@@ -16,17 +16,17 @@ export function FinalCTA() {
       />
       {/* Corner accents */}
       <div
-        className="absolute top-8 left-8 w-24 h-24 border-l border-t opacity-20"
+        className="hidden sm:block absolute top-8 left-8 w-24 h-24 border-l border-t opacity-20"
         style={{ borderColor: "var(--color-ed-amber)" }}
       />
       <div
-        className="absolute bottom-8 right-8 w-24 h-24 border-r border-b opacity-20"
+        className="hidden sm:block absolute bottom-8 right-8 w-24 h-24 border-r border-b opacity-20"
         style={{ borderColor: "var(--color-ed-amber)" }}
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
         <h2
-          className="text-3xl md:text-4xl lg:text-5xl font-serif font-normal mb-4 leading-tight"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-normal mb-4 leading-tight"
           style={{ color: "white" }}
         >
           Ready to file? You&apos;re in good hands.

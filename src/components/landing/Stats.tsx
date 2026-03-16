@@ -28,7 +28,7 @@ export function Stats() {
             <div key={stat.label} className="text-center relative">
               <div className="flex items-baseline justify-center gap-1">
                 <span
-                  className="text-5xl md:text-6xl lg:text-7xl font-serif font-normal tracking-tight"
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal tracking-tight"
                   style={{ color: "white" }}
                 >
                   {stat.display}

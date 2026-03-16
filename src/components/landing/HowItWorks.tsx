@@ -60,7 +60,7 @@ export function HowItWorks() {
             >
               {/* Giant faded number */}
               <div
-                className="text-7xl md:text-8xl font-serif font-normal leading-none mb-4 md:mb-6"
+                className="text-5xl md:text-7xl lg:text-8xl font-serif font-normal leading-none mb-4 md:mb-6"
                 style={{
                   color: "var(--color-ed-forest)",
                   opacity: 0.15,
