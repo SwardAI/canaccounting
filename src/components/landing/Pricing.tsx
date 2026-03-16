@@ -39,7 +39,7 @@ const plans = [
     price: "$1,500",
     period: "/year",
     originalPrice: "$2,400",
-    note: "Save 37%",
+    note: null,
     highlight: false,
     features: [
       "Everything in Monthly",
