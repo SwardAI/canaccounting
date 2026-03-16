@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe, PLANS, type PlanKey } from "@/lib/stripe";
 import {
   sendPurchaseConfirmation,
+  sendIntroductionEmail,
   sendAdminNotification,
 } from "@/lib/email";
 
@@ -46,13 +47,21 @@ export async function POST(req: NextRequest) {
 
       console.log(`Payment successful: ${planName} — ${customerEmail}`);
 
-      // Send confirmation email to customer
       if (customerEmail) {
+        // Email 1: Payment confirmation (instant, from noreply)
         try {
           await sendPurchaseConfirmation(customerEmail, planName, amount);
           console.log(`Confirmation email sent to ${customerEmail}`);
         } catch (err) {
           console.error("Failed to send confirmation email:", err);
+        }
+
+        // Email 2: Personal intro from Can (sent after short delay)
+        try {
+          await sendIntroductionEmail(customerEmail, planName);
+          console.log(`Introduction email sent to ${customerEmail}`);
+        } catch (err) {
+          console.error("Failed to send introduction email:", err);
         }
       }
 

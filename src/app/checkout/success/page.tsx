@@ -21,8 +21,9 @@ export default function CheckoutSuccess() {
           className="text-lg mb-8"
           style={{ color: "var(--color-ed-warm-gray)" }}
         >
-          Thank you for your purchase. We&apos;ll be in touch shortly with next
-          steps.
+          Thank you for your purchase. Check your inbox — you&apos;ll
+          receive a confirmation email and a personal message from Can
+          with everything we need to get started.
         </p>
         <Link
           href="/"
