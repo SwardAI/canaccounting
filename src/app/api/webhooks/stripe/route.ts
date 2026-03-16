@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { stripe, PLANS, type PlanKey } from "@/lib/stripe";
+import {
+  sendPurchaseConfirmation,
+  sendAdminNotification,
+} from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -29,50 +33,67 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Handle the event
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;
-      const plan = session.metadata?.plan;
+      const planKey = session.metadata?.plan as PlanKey | undefined;
       const customerEmail = session.customer_details?.email;
-      const customerId = session.customer;
 
-      console.log(`✅ Payment successful for plan: ${plan}`);
-      console.log(`   Customer: ${customerEmail}`);
-      console.log(`   Stripe Customer ID: ${customerId}`);
-      console.log(`   Session ID: ${session.id}`);
+      const planName = planKey && PLANS[planKey] ? PLANS[planKey].name : "Tax Return";
+      const amount = session.amount_total
+        ? `$${(session.amount_total / 100).toFixed(2)}`
+        : "N/A";
 
-      // TODO: Create/update user in database
-      // TODO: Send confirmation email
-      // TODO: Grant access to the service
+      console.log(`Payment successful: ${planName} — ${customerEmail}`);
+
+      // Send confirmation email to customer
+      if (customerEmail) {
+        try {
+          await sendPurchaseConfirmation(customerEmail, planName, amount);
+          console.log(`Confirmation email sent to ${customerEmail}`);
+        } catch (err) {
+          console.error("Failed to send confirmation email:", err);
+        }
+      }
+
+      // Notify admin
+      try {
+        await sendAdminNotification(
+          customerEmail || "unknown",
+          planName,
+          amount
+        );
+        console.log("Admin notification sent");
+      } catch (err) {
+        console.error("Failed to send admin notification:", err);
+      }
+
       break;
     }
 
     case "customer.subscription.created": {
       const subscription = event.data.object;
-      console.log(`📦 Subscription created: ${subscription.id}`);
-      // TODO: Store subscription ID in database
+      console.log(`Subscription created: ${subscription.id}`);
       break;
     }
 
     case "customer.subscription.updated": {
       const subscription = event.data.object;
-      console.log(`🔄 Subscription updated: ${subscription.id}, status: ${subscription.status}`);
-      // TODO: Update subscription status in database
+      console.log(
+        `Subscription updated: ${subscription.id}, status: ${subscription.status}`
+      );
       break;
     }
 
     case "customer.subscription.deleted": {
       const subscription = event.data.object;
-      console.log(`❌ Subscription cancelled: ${subscription.id}`);
-      // TODO: Revoke access, update database
+      console.log(`Subscription cancelled: ${subscription.id}`);
       break;
     }
 
     case "invoice.payment_failed": {
       const invoice = event.data.object;
-      console.log(`⚠️ Payment failed for invoice: ${invoice.id}`);
-      // TODO: Notify customer, handle retry logic
+      console.log(`Payment failed for invoice: ${invoice.id}`);
       break;
     }
 
