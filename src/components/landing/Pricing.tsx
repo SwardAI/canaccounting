@@ -1,8 +1,11 @@
-import Link from "next/link";
-import { Check, Star } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { Check, Star, Loader2 } from "lucide-react";
 
 const plans = [
   {
+    key: "tax_return",
     name: "Tax Return Only",
     description: "One-time LLC tax return filing",
     price: "$300",
@@ -19,6 +22,7 @@ const plans = [
     cta: "Start Your Return",
   },
   {
+    key: "monthly_accounting",
     name: "Monthly Accounting",
     description: "Ongoing bookkeeping support",
     price: "$200",
@@ -34,6 +38,7 @@ const plans = [
     cta: "Get Started",
   },
   {
+    key: "annual_accounting",
     name: "Annual Accounting",
     description: "Save with an annual commitment",
     price: "$1,500",
@@ -50,6 +55,7 @@ const plans = [
     cta: "Get Started",
   },
   {
+    key: "annual_accounting_tax",
     name: "Accounting + Tax Return",
     description: "The complete package",
     price: "$1,700",
@@ -68,6 +74,29 @@ const plans = [
 ];
 
 export function Pricing() {
+  const [loading, setLoading] = useState<string | null>(null);
+
+  async function handleCheckout(planKey: string) {
+    setLoading(planKey);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: planKey }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.error("Checkout error:", data.error);
+        setLoading(null);
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      setLoading(null);
+    }
+  }
+
   return (
     <section id="pricing" className="py-20 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -97,7 +126,7 @@ export function Pricing() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {plans.map((plan) => (
             <div
-              key={plan.name}
+              key={plan.key}
               className={`relative rounded-sm overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 ${
                 plan.highlight ? "ring-2 ring-ed-amber" : ""
               }`}
@@ -247,9 +276,10 @@ export function Pricing() {
                 </ul>
 
                 {/* CTA Button */}
-                <Link
-                  href="/qualify"
-                  className="inline-flex items-center justify-center w-full py-3 text-base font-semibold transition-all duration-300"
+                <button
+                  onClick={() => handleCheckout(plan.key)}
+                  disabled={loading !== null}
+                  className="inline-flex items-center justify-center w-full py-3 text-base font-semibold transition-all duration-300 cursor-pointer disabled:opacity-70 disabled:cursor-wait"
                   style={
                     plan.highlight
                       ? {
@@ -262,8 +292,12 @@ export function Pricing() {
                         }
                   }
                 >
-                  {plan.cta}
-                </Link>
+                  {loading === plan.key ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    plan.cta
+                  )}
+                </button>
               </div>
             </div>
           ))}
