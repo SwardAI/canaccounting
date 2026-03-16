@@ -2,8 +2,8 @@ import { Check } from "lucide-react";
 import Image from "next/image";
 
 const bullets = [
-  "CPA-level accuracy guarantee",
-  "Error detection before filing",
+  "Professional-grade accuracy on every filing",
+  "Errors caught before your return is filed",
   "Unlimited revisions included",
 ];
 
@@ -48,15 +48,15 @@ export function ExpertReview() {
               className="text-3xl md:text-4xl font-serif font-normal mb-6 leading-tight"
               style={{ color: "var(--color-ed-charcoal)" }}
             >
-              Every return reviewed by tax professionals
+              Every return is reviewed by tax professionals.
             </h2>
             <p
               className="text-base leading-relaxed mb-8"
               style={{ color: "var(--color-ed-charcoal-light)" }}
             >
-              Your LLC tax return is prepared with precision, then human experts
-              verify every calculation. You get efficiency with the confidence
-              of professional oversight.
+              Your LLC tax return is prepared with care, then verified by
+              experienced tax professionals. You get speed without sacrificing
+              accuracy.
             </p>
             <ul className="space-y-3">
               {bullets.map((text) => (

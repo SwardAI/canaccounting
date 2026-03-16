@@ -5,19 +5,19 @@ const steps = [
     num: "1",
     title: "Upload your documents",
     description:
-      "Drop in your P&L and balance sheet. We'll tell you if anything's missing.",
+      "Send us your profit & loss statement and balance sheet. If anything's missing, we'll let you know exactly what we need.",
   },
   {
     num: "2",
     title: "We prepare your return",
     description:
-      "We generate your complete return — typically within 48 hours.",
+      "Our team prepares your complete LLC tax return — typically within 48 hours. Every line is reviewed by a tax professional before it reaches you.",
   },
   {
     num: "3",
     title: "Review and pay",
     description:
-      "Check your return. Pay $300 only if satisfied. No payment upfront.",
+      "Look over your return. If everything checks out, pay $300. No payment is collected upfront.",
   },
 ];
 
@@ -29,7 +29,6 @@ export function HowItWorks() {
       style={{ backgroundColor: "white" }}
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-16">
           <span
             className="inline-block text-xs font-semibold tracking-[0.2em] uppercase mb-4"
@@ -41,24 +40,22 @@ export function HowItWorks() {
             className="text-3xl md:text-4xl font-serif font-normal mb-4"
             style={{ color: "var(--color-ed-charcoal)" }}
           >
-            Your return in three steps
+            Three steps. That&apos;s it.
           </h2>
           <p
             className="text-lg max-w-2xl mx-auto"
             style={{ color: "var(--color-ed-warm-gray)" }}
           >
-            No experience needed. We guide you through everything.
+            No tax experience needed. We walk you through everything.
           </p>
         </div>
 
-        {/* Steps — 3-column grid with giant faded numbers */}
         <div className="grid md:grid-cols-3 gap-8 md:gap-12 mb-16">
           {steps.map((step, index) => (
             <div
               key={step.num}
               className="relative text-center md:text-left"
             >
-              {/* Giant faded number */}
               <div
                 className="text-5xl md:text-7xl lg:text-8xl font-serif font-normal leading-none mb-4 md:mb-6"
                 style={{
@@ -82,7 +79,6 @@ export function HowItWorks() {
                   {step.description}
                 </p>
               </div>
-              {/* Dashed connector (desktop) */}
               {index < steps.length - 1 && (
                 <div
                   className="hidden md:block absolute top-8 right-0 translate-x-1/2 w-8 border-t border-dashed"
@@ -93,7 +89,6 @@ export function HowItWorks() {
           ))}
         </div>
 
-        {/* CTA */}
         <div className="text-center">
           <Link
             href="/qualify"

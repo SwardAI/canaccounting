@@ -3,8 +3,24 @@ import { Check, Star } from "lucide-react";
 
 const plans = [
   {
+    name: "Tax Return Only",
+    description: "One-time LLC tax return filing",
+    price: "$300",
+    period: "",
+    originalPrice: "$600",
+    note: "Limited time — 50% off",
+    highlight: true,
+    features: [
+      "Complete LLC tax return (Form 1120 & Form 5472)",
+      "Reviewed by a tax professional",
+      "Unlimited revisions",
+      "Delivered within 48 hours",
+    ],
+    cta: "Start Your Return",
+  },
+  {
     name: "Monthly Accounting",
-    description: "Bookkeeping on a flexible monthly basis",
+    description: "Ongoing bookkeeping support",
     price: "$200",
     period: "/month",
     note: null,
@@ -19,15 +35,15 @@ const plans = [
   },
   {
     name: "Annual Accounting",
-    description: "Save 37% with an annual commitment",
+    description: "Save with an annual commitment",
     price: "$1,500",
     period: "/year",
     originalPrice: "$2,400",
-    note: null,
+    note: "Save 37%",
     highlight: false,
     features: [
       "Everything in Monthly",
-      "$125/month — save 37%",
+      "$125/month effective rate",
       "Priority support",
       "Year-end summary included",
     ],
@@ -35,37 +51,19 @@ const plans = [
   },
   {
     name: "Accounting + Tax Return",
-    description: "The complete package for LLC owners",
+    description: "The complete package",
     price: "$1,700",
     period: "/year",
     originalPrice: "$2,900",
     note: null,
     highlight: false,
     features: [
-      "Everything in Annual",
-      "Full LLC tax return preparation",
+      "Everything in Annual Accounting",
+      "Full LLC tax return included",
       "Form 1120 & Form 5472",
-      "Human-reviewed filing",
-      "Unlimited revisions",
+      "Professionally reviewed filing",
     ],
     cta: "Get Started",
-  },
-  {
-    name: "Tax Return Only",
-    description: "One-time LLC tax return filing",
-    price: "$300",
-    period: "",
-    originalPrice: "$600",
-    note: "Limited time — 50% off",
-    highlight: true,
-    features: [
-      "Complete LLC tax return",
-      "Form 1120 & Form 5472",
-      "Human-reviewed by tax pros",
-      "Unlimited revisions",
-      "Done in 48 hours",
-    ],
-    cta: "Start Your Return",
   },
 ];
 
@@ -85,13 +83,13 @@ export function Pricing() {
             className="text-3xl md:text-4xl font-serif font-normal mb-4"
             style={{ color: "var(--color-ed-charcoal)" }}
           >
-            Simple, transparent pricing
+            Simple, transparent pricing.
           </h2>
           <p
             className="text-lg max-w-2xl mx-auto"
             style={{ color: "var(--color-ed-warm-gray)" }}
           >
-            No hidden fees. No surprises. Choose the plan that fits your needs.
+            No hidden fees. No surprises.
           </p>
         </div>
 

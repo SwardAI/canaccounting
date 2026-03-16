@@ -3,27 +3,21 @@ import Image from "next/image";
 
 const testimonials = [
   {
-    title: "Professionals who know their stuff",
     quote:
-      "You can tell they've been doing this for years. Everything was handled perfectly — no back and forth, no confusion.",
-    name: "Marcus Johnson",
-    role: "Founder, Johnson Consulting",
+      "They clearly know what they're doing. Everything was handled quickly — no back-and-forth, no confusion. Easiest tax season I've had.",
+    name: "Consulting LLC owner",
     image: "/images/testimonials/marcus.png",
   },
   {
-    title: "48-hour turnaround is real",
     quote:
-      "The human review caught one thing I would have missed. Uploaded Monday night, had my return Tuesday morning.",
-    name: "Priya Sharma",
-    role: "CEO, TechFlow Solutions",
+      "Uploaded my documents Monday night. Had my completed return by Tuesday morning. The review even caught something I would have missed.",
+    name: "SaaS company founder",
     image: "/images/testimonials/priya.png",
   },
   {
-    title: "Perfect for foreign LLC owners",
     quote:
-      "As a non-resident, US taxes were confusing. CanTax handled Form 5472, 1120, everything. Incredibly smooth.",
-    name: "Jessica Williams",
-    role: "Owner, Williams Agency",
+      "As a non-resident LLC owner, US taxes felt overwhelming. CanTax handled Form 5472, Form 1120 — everything. Incredibly smooth process.",
+    name: "Foreign-owned LLC, agency",
     image: "/images/testimonials/jessica.png",
   },
 ];
@@ -44,7 +38,7 @@ export function Testimonials() {
         <div className="grid md:grid-cols-2 gap-8">
           {testimonials.map((t, index) => (
             <div
-              key={t.name}
+              key={index}
               className={`relative p-8 transition-all duration-300 hover:-translate-y-1 ${
                 index === testimonials.length - 1
                   ? "md:col-span-2 md:max-w-[calc(50%-1rem)] md:mx-auto"
@@ -84,14 +78,6 @@ export function Testimonials() {
                 ))}
               </div>
 
-              {/* Title */}
-              <h3
-                className="text-lg font-semibold mb-3"
-                style={{ color: "var(--color-ed-charcoal)" }}
-              >
-                {t.title}
-              </h3>
-
               {/* Quote */}
               <p
                 className="text-base leading-relaxed mb-6"
@@ -117,19 +103,11 @@ export function Testimonials() {
                     className="object-cover w-full h-full"
                   />
                 </div>
-                <div>
-                  <div
-                    className="font-semibold text-sm"
-                    style={{ color: "var(--color-ed-charcoal)" }}
-                  >
-                    {t.name}
-                  </div>
-                  <span
-                    className="text-xs"
-                    style={{ color: "var(--color-ed-warm-gray)" }}
-                  >
-                    {t.role}
-                  </span>
+                <div
+                  className="font-semibold text-sm"
+                  style={{ color: "var(--color-ed-charcoal)" }}
+                >
+                  {t.name}
                 </div>
               </div>
             </div>

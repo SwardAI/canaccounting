@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 export function Hero() {
   return (
@@ -25,14 +24,14 @@ export function Hero() {
 
           {/* Headline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal leading-tight mb-8 text-gray-900 font-serif">
-            LLC Tax Return? Just $300.
+            LLC Tax Returns. $300. Done.
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto mb-12">
-            Your LLC taxes done right. Every time. By professionals
-            who&apos;ve been doing this since 2018. Fast, accurate, and
-            stress-free.
+            Prepared by professionals. Reviewed for accuracy. Filed with
+            confidence. We&apos;ve handled hundreds of LLC returns since 2018
+            — so you don&apos;t have to figure it out alone.
           </p>
 
           {/* CTA Button */}

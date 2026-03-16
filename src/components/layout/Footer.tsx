@@ -9,7 +9,7 @@ export function Footer() {
             <span className="text-xl font-bold text-black">Company Logo</span>
           </div>
           <p className="text-sm text-gray-600 max-w-md">
-            Your LLC taxes done right. Every time.
+            Your LLC taxes. Done right.
           </p>
         </div>
         <div className="border-t border-gray-200 pt-8">

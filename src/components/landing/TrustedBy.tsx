@@ -2,9 +2,9 @@ import { Check } from "lucide-react";
 import Image from "next/image";
 
 const bullets = [
-  "Efficient document processing",
-  "Every return reviewed by tax professionals",
-  "Transparent pricing with no hidden fees",
+  "Fast, organized document processing",
+  "Every return reviewed by a tax professional",
+  "Transparent pricing — no hidden fees",
 ];
 
 export function TrustedBy() {
@@ -48,14 +48,14 @@ export function TrustedBy() {
               className="text-3xl md:text-4xl font-serif font-normal mb-6 leading-tight"
               style={{ color: "var(--color-ed-charcoal)" }}
             >
-              Hundreds of LLC owners have filed with CanTax
+              Trusted by hundreds of LLC owners.
             </h2>
             <p
               className="text-base leading-relaxed mb-8"
               style={{ color: "var(--color-ed-charcoal-light)" }}
             >
-              From e-commerce brands to consulting firms, small business owners
-              trust us to handle their tax returns accurately and affordably.
+              From e-commerce brands to consulting firms, business owners rely
+              on CanTax for accurate, affordable LLC tax returns.
             </p>
             <ul className="space-y-3">
               {bullets.map((text) => (

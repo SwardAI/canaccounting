@@ -35,7 +35,8 @@ export function FinalCTA() {
           className="text-base md:text-lg mb-8 max-w-xl mx-auto"
           style={{ color: "var(--color-ed-sage-light)" }}
         >
-          500+ returns filed since 2018. Human-reviewed. No experience needed.
+          500+ returns filed since 2018. Professionally reviewed. No tax experience
+          needed.
         </p>
         <Link
           href="/qualify"
@@ -60,12 +61,6 @@ export function FinalCTA() {
             />
           </svg>
         </Link>
-        <p
-          className="mt-4 text-sm"
-          style={{ color: "var(--color-ed-sage)" }}
-        >
-          No credit card required to start
-        </p>
       </div>
     </section>
   );

@@ -4,17 +4,17 @@ const benefits = [
   {
     icon: DollarSign,
     title: "7+ Years of Experience",
-    description: "We've filed hundreds of LLC returns since 2018",
+    description: "Hundreds of LLC returns filed since 2018.",
   },
   {
     icon: CircleHelp,
-    title: "No Experience Needed",
-    description: "We guide you through everything",
+    title: "Simple From Start to Finish",
+    description: "No tax knowledge required. We handle the complexity.",
   },
   {
     icon: UserCheck,
-    title: "Human-Reviewed",
-    description: "Tax pros check every line",
+    title: "Professionally Reviewed",
+    description: "Every line checked by a tax professional before filing.",
   },
 ];
 
@@ -24,7 +24,7 @@ export function Benefits() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-900 mb-4 font-serif">
-            Perfect for LLC owners
+            Built for LLC owners.
           </h2>
         </div>
 
