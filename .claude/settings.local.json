@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp -r /tmp/docs_backup /c/Users/samue/nextprojects/canaccount/docs)",
+      "Bash(cp /tmp/CLAUDE.md.backup /c/Users/samue/nextprojects/canaccount/CLAUDE.md)",
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest init -d --style new-york --base-color slate)",
+      "Bash(npx shadcn@latest init -d)"
+    ]
+  }
+}
