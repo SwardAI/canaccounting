@@ -17,7 +17,9 @@ export async function POST(req: NextRequest) {
     }
 
     const selectedPlan = PLANS[plan as PlanKey];
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
+      || `https://${req.headers.get("host")}`;
 
     if (selectedPlan.mode === "payment") {
       // One-time payment (Tax Return Only)
