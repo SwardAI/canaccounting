@@ -5,7 +5,29 @@
       "Bash(cp /tmp/CLAUDE.md.backup /c/Users/samue/nextprojects/canaccount/CLAUDE.md)",
       "Bash(npm install:*)",
       "Bash(npx shadcn@latest init -d --style new-york --base-color slate)",
-      "Bash(npx shadcn@latest init -d)"
+      "Bash(npx shadcn@latest init -d)",
+      "Bash(npx shadcn@latest add card input label badge separator)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:cranston.ai)",
+      "Bash(npx next:*)",
+      "Bash(curl -s -L \"https://cranston.ai/lp/biz-tax-a5-m1-firstyear-price\")",
+      "Bash(curl -s \"https://cranston.ai/_next/static/chunks/04f5468f5deb7dfe.css?dpl=dpl_7nkyej17St4HCkkLga1jgshS9dKG\")",
+      "Bash(tr '{' '\\\\n{')",
+      "Bash(tr ';' ';\\\\n')",
+      "Bash(curl -s \"https://cranston.ai/_next/static/chunks/a9ceeb1487672ca2.css?dpl=dpl_7nkyej17St4HCkkLga1jgshS9dKG\")",
+      "Bash(tr ';' '\\\\n')",
+      "Bash(curl -s \"https://cranston.ai/lp/biz-tax-a5-m1-firstyear-price\")",
+      "Bash(tr '{' '\\\\n')",
+      "Bash(curl -s -o public/images/lp/tax-professional-female.png \"https://cranston.ai/_next/image?url=%2Fstatic%2Flp%2Ftax-professional-female.png&w=1200&q=75&dpl=dpl_7nkyej17St4HCkkLga1jgshS9dKG\")",
+      "Bash(curl -s -o public/images/lp/business-owners-warehouse.png \"https://cranston.ai/_next/image?url=%2Fstatic%2Flp%2Fbusiness-owners-warehouse.png&w=1200&q=75&dpl=dpl_7nkyej17St4HCkkLga1jgshS9dKG\")",
+      "Bash(curl -s -o public/images/testimonials/marcus.png \"https://cranston.ai/_next/image?url=%2Fstatic%2Ftestimonials%2Ftestimonial-03-marcus.png&w=96&q=75&dpl=dpl_7nkyej17St4HCkkLga1jgshS9dKG\")",
+      "Bash(curl -s -o public/images/testimonials/priya.png \"https://cranston.ai/_next/image?url=%2Fstatic%2Ftestimonials%2Ftestimonial-02-priya.png&w=96&q=75&dpl=dpl_7nkyej17St4HCkkLga1jgshS9dKG\")",
+      "Bash(curl -s -o public/images/testimonials/jessica.png \"https://cranston.ai/_next/image?url=%2Fstatic%2Ftestimonials%2Ftestimonial-04-jessica.png&w=96&q=75&dpl=dpl_7nkyej17St4HCkkLga1jgshS9dKG\")",
+      "Bash(curl -s -o /tmp/cranston-sans.ttf \"https://cranston.ai/static/sansserif.ttf\")",
+      "Bash(curl -s -o /tmp/cranston-serif.ttf \"https://cranston.ai/static/serif.ttf\")",
+      "Bash(ls -la /tmp/cranston-*.ttf)",
+      "Bash(cp /tmp/cranston-serif.ttf public/fonts/serif.ttf)",
+      "Bash(cp /tmp/cranston-sans.ttf public/fonts/sans.ttf)"
     ]
   }
 }
