@@ -11,8 +11,7 @@ export const PLANS = {
   tax_return: {
     name: "Tax Return Only",
     mode: "payment" as const,
-    price: 30000, // $300 in cents
-    originalPrice: 60000,
+    price: 60000, // $600 in cents
   },
   monthly_accounting: {
     name: "Monthly Accounting",

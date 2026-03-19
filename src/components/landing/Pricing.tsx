@@ -8,10 +8,10 @@ const plans = [
     key: "tax_return",
     name: "Tax Return Only",
     description: "One-time LLC tax return filing",
-    price: "$300",
+    price: "$600",
     period: "",
-    originalPrice: "$600",
-    note: "Limited time — 50% off",
+    originalPrice: null,
+    note: null,
     highlight: true,
     features: [
       "Complete LLC tax return (Form 1120 & Form 5472)",

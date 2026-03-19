@@ -16,13 +16,13 @@ const customSerif = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "UnitedTax — LLC Tax Returns for $300",
+    default: "UnitedTax — LLC Tax Returns for $600",
     template: "%s | UnitedTax",
   },
   description:
     "LLC tax returns done right — by professionals since 2018. Fast, accurate, and stress-free. Filed in 48 hours.",
   openGraph: {
-    title: "UnitedTax — LLC Tax Returns for $300",
+    title: "UnitedTax — LLC Tax Returns for $600",
     description:
       "LLC tax returns done right — by professionals since 2018. Fast, accurate, and stress-free. Filed in 48 hours.",
     type: "website",

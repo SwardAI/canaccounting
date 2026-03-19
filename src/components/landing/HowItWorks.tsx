@@ -17,7 +17,7 @@ const steps = [
     num: "3",
     title: "Review and pay",
     description:
-      "Look over your return. If everything checks out, pay $300. No payment is collected upfront.",
+      "Look over your return. If everything checks out, pay $600. No payment is collected upfront.",
   },
 ];
 
