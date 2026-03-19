@@ -58,9 +58,9 @@ const plans = [
     key: "annual_accounting_tax",
     name: "Accounting + Tax Return",
     description: "The complete package",
-    price: "$1,700",
+    price: "$1,900",
     period: "/year",
-    originalPrice: "$2,900",
+    originalPrice: "$3,000",
     note: null,
     highlight: false,
     features: [

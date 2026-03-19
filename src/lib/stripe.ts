@@ -29,9 +29,9 @@ export const PLANS = {
   annual_accounting_tax: {
     name: "Accounting + Tax Return",
     mode: "subscription" as const,
-    price: 170000, // $1,700 in cents
+    price: 190000, // $1,900 in cents
     interval: "year" as const,
-    originalPrice: 290000,
+    originalPrice: 300000,
   },
 } as const;
 
