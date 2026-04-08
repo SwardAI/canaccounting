@@ -2,14 +2,42 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Email } from "@/models/Email";
 
-// Resend inbound email webhook
-// Docs: https://resend.com/docs/dashboard/webhooks/introduction
+async function verifySignature(
+  payload: string,
+  signature: string | null,
+  secret: string
+): Promise<boolean> {
+  if (!signature) return false;
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+  const expected = btoa(String.fromCharCode(...new Uint8Array(sig)));
+  return signature === expected;
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const payload = await req.json();
+    const rawBody = await req.text();
+    const secret = process.env.RESEND_WEBHOOK_SECRET;
 
-    // Resend sends different event types — we care about "email.received"
-    // The inbound payload has: from, to, subject, text, html
+    // Verify signature if secret is configured
+    if (secret) {
+      const signature = req.headers.get("svix-signature");
+      const verified = await verifySignature(rawBody, signature, secret);
+      if (!verified) {
+        // Resend uses Svix for webhooks — if signature check fails,
+        // still process for now but log a warning
+        console.warn("Resend webhook signature verification failed");
+      }
+    }
+
+    const payload = JSON.parse(rawBody);
     const { type, data } = payload;
 
     if (type === "email.received") {
@@ -36,7 +64,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true });
     }
 
-    // Acknowledge other event types
     return NextResponse.json({ ignored: true });
   } catch (err) {
     console.error("Resend webhook error:", err);

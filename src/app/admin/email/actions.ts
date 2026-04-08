@@ -42,10 +42,6 @@ export async function sendCustomEmail(formData: FormData) {
         <strong>${fromName}</strong><br/>
         <span style="color: #78716c; font-size: 13px;">UnitedTax</span>
       </p>
-      <hr style="border: none; border-top: 1px solid #e7e5e4; margin: 32px 0;" />
-      <p style="color: #a8a29e; font-size: 12px;">
-        UnitedTax — Your LLC taxes done right. Every time.
-      </p>
     </div>
   `;
 
