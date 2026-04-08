@@ -11,8 +11,8 @@ const emailSchema = new Schema(
     from: { type: String },
     fromName: { type: String, default: "Sam" },
     subject: { type: String, required: true },
-    body: { type: String, required: true },
-    htmlBody: { type: String },
+    body: { type: String, default: "" },
+    htmlBody: { type: String, default: "" },
     resendId: { type: String },
     status: {
       type: String,
