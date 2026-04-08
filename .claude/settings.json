@@ -5,7 +5,8 @@
       "Bash(find /c/Users/samue/nextprojects/canaccount/src -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) -exec grep -l \"Schema\\\\|model\\(\" {} \\\\;)",
       "Bash(openssl rand:*)",
       "Bash(npx tsx:*)",
-      "Bash(MONGODB_URI=\"mongodb+srv://sam_db_user:RSJ1E0gmcIe17wfX@cluster0.eakeqgz.mongodb.net/unitedtax?retryWrites=true&w=majority\" npx tsx scripts/create-admin.mts sam@unitedtax.us \"cantax1!\")"
+      "Bash(MONGODB_URI=\"mongodb+srv://sam_db_user:RSJ1E0gmcIe17wfX@cluster0.eakeqgz.mongodb.net/unitedtax?retryWrites=true&w=majority\" npx tsx scripts/create-admin.mts sam@unitedtax.us \"cantax1!\")",
+      "Bash(node -e ':*)"
     ],
     "additionalDirectories": [
       "c:\\Users\\samue\\nextprojects\\canaccount\\src\\app\\api\\auth"
