@@ -87,7 +87,6 @@ export default function AdminEmailPage() {
     return e.direction === filter;
   });
 
-  const unreadCount = emails.filter((e) => !e.read).length;
   const inboundUnread = emails.filter((e) => e.direction === "received" && !e.read).length;
 
   async function handleSelect(email: EmailItem) {
@@ -131,9 +130,7 @@ export default function AdminEmailPage() {
             <p className="text-sm text-muted-foreground">
               {inboundUnread > 0
                 ? `${inboundUnread} new incoming`
-                : unreadCount > 0
-                  ? `${unreadCount} unread`
-                  : "No unread emails"}
+                : "No unread emails"}
             </p>
           </div>
           <Button
@@ -250,13 +247,15 @@ export default function AdminEmailPage() {
                   </CardDescription>
                 </div>
                 <div className="flex shrink-0 gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleToggleRead(selected)}
-                  >
-                    Mark {selected.read ? "unread" : "read"}
-                  </Button>
+                  {selected.direction === "received" && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleToggleRead(selected)}
+                    >
+                      Mark {selected.read ? "unread" : "read"}
+                    </Button>
+                  )}
                   {selected.direction === "received" && (
                     <Button
                       size="sm"
@@ -334,12 +333,12 @@ export default function AdminEmailPage() {
                       <button
                         onClick={() => handleSelect(email)}
                         className={`w-full text-left px-4 py-3 transition-colors hover:bg-muted/50 flex items-start gap-3 ${
-                          !email.read ? "bg-muted/30" : ""
+                          email.direction === "received" && !email.read ? "bg-muted/30" : ""
                         }`}
                       >
-                        {/* Unread dot */}
+                        {/* Unread dot — only for received */}
                         <span className="mt-1.5 shrink-0">
-                          {!email.read ? (
+                          {email.direction === "received" && !email.read ? (
                             <span className="block size-2 rounded-full bg-primary" />
                           ) : (
                             <span className="block size-2" />
@@ -350,7 +349,7 @@ export default function AdminEmailPage() {
                           <div className="flex items-center gap-2">
                             <span
                               className={`truncate text-sm ${
-                                !email.read ? "font-semibold" : "font-normal"
+                                email.direction === "received" && !email.read ? "font-semibold" : "font-normal"
                               }`}
                             >
                               {email.direction === "received"
@@ -377,7 +376,7 @@ export default function AdminEmailPage() {
                           </div>
                           <p
                             className={`truncate text-sm ${
-                              !email.read
+                              email.direction === "received" && !email.read
                                 ? "text-foreground"
                                 : "text-muted-foreground"
                             }`}
