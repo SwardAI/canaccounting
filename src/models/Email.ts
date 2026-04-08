@@ -3,7 +3,7 @@ import mongoose, { Schema, type InferSchemaType } from "mongoose";
 const emailSchema = new Schema(
   {
     to: { type: String, required: true },
-    fromName: { type: String, default: "Can" },
+    fromName: { type: String, default: "Sam" },
     subject: { type: String, required: true },
     body: { type: String, required: true },
     htmlBody: { type: String, required: true },

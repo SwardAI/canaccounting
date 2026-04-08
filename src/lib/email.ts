@@ -9,8 +9,8 @@ function getResend() {
   return new Resend(key);
 }
 
-const CAN_EMAIL = process.env.ADMIN_EMAIL || "can@unitedtax.us";
-const FROM = `UnitedTax <${CAN_EMAIL}>`;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "sam@unitedtax.us";
+const FROM = `UnitedTax <${ADMIN_EMAIL}>`;
 
 // Email 1: Automatic payment confirmation (from noreply)
 export async function sendPurchaseConfirmation(
@@ -23,7 +23,7 @@ export async function sendPurchaseConfirmation(
   return resend.emails.send({
     from: FROM,
     to,
-    replyTo: CAN_EMAIL,
+    replyTo: ADMIN_EMAIL,
     subject: "Payment confirmed — here's what happens next",
     html: `
       <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px;">
@@ -40,7 +40,7 @@ export async function sendPurchaseConfirmation(
         </div>
 
         <p style="color: #44403c; font-size: 15px; line-height: 1.6;">
-          You'll receive a personal email from Can shortly with everything we need to get started. Keep an eye on your inbox.
+          You'll receive a personal email from Sam shortly with everything we need to get started. Keep an eye on your inbox.
         </p>
 
         <hr style="border: none; border-top: 1px solid #e7e5e4; margin: 32px 0;" />
@@ -52,7 +52,7 @@ export async function sendPurchaseConfirmation(
   });
 }
 
-// Email 2: Personal introduction from Can (sent from Can's address)
+// Email 2: Personal introduction from Sam (sent from Sam's address)
 export async function sendIntroductionEmail(
   to: string,
   plan: string
@@ -97,9 +97,9 @@ export async function sendIntroductionEmail(
   }
 
   return resend.emails.send({
-    from: `Can <${CAN_EMAIL}>`,
+    from: `Sam <${ADMIN_EMAIL}>`,
     to,
-    replyTo: CAN_EMAIL,
+    replyTo: ADMIN_EMAIL,
     subject: `Welcome — let's get started on your ${isTaxReturn ? "tax return" : "accounting"}`,
     html: `
       <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px;">
@@ -108,7 +108,7 @@ export async function sendIntroductionEmail(
         </p>
 
         <p style="color: #44403c; font-size: 15px; line-height: 1.7;">
-          I'm Can, and I'll be personally handling your ${isBoth ? "accounting and tax return" : isTaxReturn ? "LLC tax return" : "accounting"}. Thanks for choosing UnitedTax — I want to make this as smooth as possible for you.
+          I'm Sam, and I'll be personally handling your ${isBoth ? "accounting and tax return" : isTaxReturn ? "LLC tax return" : "accounting"}. Thanks for choosing UnitedTax — I want to make this as smooth as possible for you.
         </p>
 
         ${whatWeNeed}
@@ -123,7 +123,7 @@ export async function sendIntroductionEmail(
 
         <p style="color: #1c1917; font-size: 15px; margin-top: 24px;">
           Best,<br/>
-          <strong>Can</strong><br/>
+          <strong>Sam</strong><br/>
           <span style="color: #78716c; font-size: 13px;">UnitedTax</span>
         </p>
 
@@ -136,7 +136,7 @@ export async function sendIntroductionEmail(
   });
 }
 
-// Email to Can: notification of new purchase
+// Email to admin: notification of new purchase
 export async function sendAdminNotification(
   customerEmail: string,
   plan: string,
@@ -146,7 +146,7 @@ export async function sendAdminNotification(
   if (!resend) return null;
   return resend.emails.send({
     from: FROM,
-    to: CAN_EMAIL,
+    to: ADMIN_EMAIL,
     subject: `New purchase: ${plan} — ${customerEmail}`,
     html: `
       <div style="font-family: sans-serif; padding: 20px;">
@@ -170,9 +170,9 @@ export async function sendReturnDelivery(
   const resend = getResend();
   if (!resend) return null;
   return resend.emails.send({
-    from: `Can <${CAN_EMAIL}>`,
+    from: `Sam <${ADMIN_EMAIL}>`,
     to,
-    replyTo: CAN_EMAIL,
+    replyTo: ADMIN_EMAIL,
     subject: `Your ${taxYear} LLC tax return is ready for review`,
     html: `
       <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px;">
@@ -199,7 +199,7 @@ export async function sendReturnDelivery(
 
         <p style="color: #1c1917; font-size: 15px; margin-top: 24px;">
           Best,<br/>
-          <strong>Can</strong><br/>
+          <strong>Sam</strong><br/>
           <span style="color: #78716c; font-size: 13px;">UnitedTax</span>
         </p>
 

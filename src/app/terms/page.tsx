@@ -135,10 +135,10 @@ export default function Terms() {
           <p>
             Questions about these terms? Contact us at{" "}
             <a
-              href="mailto:can@unitedtax.us"
+              href="mailto:sam@unitedtax.us"
               style={{ color: "var(--color-ed-forest)" }}
             >
-              can@unitedtax.us
+              sam@unitedtax.us
             </a>
             .
           </p>

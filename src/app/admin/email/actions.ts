@@ -4,7 +4,7 @@ import { Resend } from "resend";
 import { connectDB } from "@/lib/db";
 import { Email } from "@/models/Email";
 
-const CAN_EMAIL = process.env.ADMIN_EMAIL || "can@unitedtax.us";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "sam@unitedtax.us";
 
 function bodyToHtml(body: string) {
   return body
@@ -20,7 +20,7 @@ export async function sendCustomEmail(formData: FormData) {
   const to = formData.get("to") as string;
   const subject = formData.get("subject") as string;
   const body = formData.get("body") as string;
-  const fromName = (formData.get("fromName") as string) || "Can";
+  const fromName = (formData.get("fromName") as string) || "Sam";
 
   if (!to || !subject || !body) {
     return { success: false, error: "All fields are required." };
@@ -53,9 +53,9 @@ export async function sendCustomEmail(formData: FormData) {
 
   try {
     const result = await resend.emails.send({
-      from: `${fromName} <${CAN_EMAIL}>`,
+      from: `${fromName} <${ADMIN_EMAIL}>`,
       to,
-      replyTo: CAN_EMAIL,
+      replyTo: ADMIN_EMAIL,
       subject,
       html: fullHtml,
     });

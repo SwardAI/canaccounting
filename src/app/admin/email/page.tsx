@@ -161,12 +161,12 @@ export default function AdminEmailPage() {
                   <Input
                     id="fromName"
                     name="fromName"
-                    defaultValue="Can"
-                    placeholder="Can"
+                    defaultValue="Sam"
+                    placeholder="Sam"
                   />
                   <p className="text-xs text-muted-foreground">
                     Display name — always sends from{" "}
-                    <span className="font-medium">can@unitedtax.us</span>
+                    <span className="font-medium">sam@unitedtax.us</span>
                   </p>
                 </div>
 

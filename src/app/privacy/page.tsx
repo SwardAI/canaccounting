@@ -114,10 +114,10 @@ export default function Privacy() {
           <p>
             If you have questions about this Privacy Policy, contact us at{" "}
             <a
-              href="mailto:can@unitedtax.us"
+              href="mailto:sam@unitedtax.us"
               style={{ color: "var(--color-ed-forest)" }}
             >
-              can@unitedtax.us
+              sam@unitedtax.us
             </a>
             .
           </p>

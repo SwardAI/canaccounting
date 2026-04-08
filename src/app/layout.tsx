@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { SessionProvider } from "@/components/providers/SessionProvider";
 import "./globals.css";
 
 const customSans = localFont({
@@ -39,7 +40,7 @@ export default function RootLayout({
       <body
         className={`${customSans.variable} ${customSerif.variable} antialiased`}
       >
-        {children}
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );
