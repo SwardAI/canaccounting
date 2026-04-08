@@ -1,36 +1,40 @@
-import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export default auth((req) => {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Protect /admin routes (except login page)
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    if (!req.auth) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!token) {
       const loginUrl = new URL("/admin/login", req.url);
       loginUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(loginUrl);
     }
 
-    const role = (req.auth.user as { role?: string })?.role;
-    if (role !== "admin") {
+    if (token.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
   }
 
   // Protect /api/admin routes
   if (pathname.startsWith("/api/admin")) {
-    if (!req.auth) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const role = (req.auth.user as { role?: string })?.role;
-    if (role !== "admin") {
+
+    if (token.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: ["/admin/:path*", "/api/admin/:path*"],
