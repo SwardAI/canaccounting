@@ -1,8 +1,5 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
-import { connectDB } from "@/lib/db";
-import { User } from "@/models/User";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -13,25 +10,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        const adminEmail = process.env.ADMIN_EMAIL || "sam@unitedtax.us";
+        const adminPassword = process.env.ADMIN_PASSWORD || "cantax1!";
 
-        await connectDB();
+        if (
+          credentials?.email === adminEmail &&
+          credentials?.password === adminPassword
+        ) {
+          return {
+            id: "1",
+            email: adminEmail,
+            name: "Sam",
+            role: "admin",
+          };
+        }
 
-        const user = await User.findOne({ email: credentials.email });
-        if (!user || !user.password) return null;
-
-        const valid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
-        if (!valid) return null;
-
-        return {
-          id: user._id.toString(),
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        };
+        return null;
       },
     }),
   ],
