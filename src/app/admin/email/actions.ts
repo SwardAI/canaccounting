@@ -62,7 +62,9 @@ export async function sendCustomEmail(formData: FormData) {
 
     if (result.error) {
       await Email.create({
+        direction: "sent",
         to,
+        from: ADMIN_EMAIL,
         fromName,
         subject,
         body,
@@ -74,7 +76,9 @@ export async function sendCustomEmail(formData: FormData) {
     }
 
     await Email.create({
+      direction: "sent",
       to,
+      from: ADMIN_EMAIL,
       fromName,
       subject,
       body,
@@ -87,7 +91,9 @@ export async function sendCustomEmail(formData: FormData) {
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     await Email.create({
+      direction: "sent",
       to,
+      from: ADMIN_EMAIL,
       fromName,
       subject,
       body,
@@ -105,10 +111,11 @@ export async function getEmails() {
     .sort({ createdAt: -1 })
     .limit(100)
     .lean();
-  // Serialize for client
   return emails.map((e) => ({
     _id: String(e._id),
+    direction: e.direction || "sent",
     to: e.to,
+    from: e.from,
     fromName: e.fromName,
     subject: e.subject,
     body: e.body,

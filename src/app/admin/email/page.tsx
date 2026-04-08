@@ -22,7 +22,9 @@ import {
 
 type EmailItem = {
   _id: string;
+  direction: string;
   to: string;
+  from?: string;
   fromName: string;
   subject: string;
   body: string;
@@ -52,10 +54,13 @@ function timeAgo(iso: string) {
   return `${days}d ago`;
 }
 
+type Filter = "all" | "received" | "sent";
+
 export default function AdminEmailPage() {
   const [emails, setEmails] = useState<EmailItem[]>([]);
   const [selected, setSelected] = useState<EmailItem | null>(null);
   const [view, setView] = useState<"inbox" | "compose">("inbox");
+  const [filter, setFilter] = useState<Filter>("all");
   const [loading, setLoading] = useState(true);
   const [state, action, isPending] = useActionState(submitEmail, null);
 
@@ -77,7 +82,13 @@ export default function AdminEmailPage() {
     }
   }, [state, loadEmails]);
 
+  const filtered = emails.filter((e) => {
+    if (filter === "all") return true;
+    return e.direction === filter;
+  });
+
   const unreadCount = emails.filter((e) => !e.read).length;
+  const inboundUnread = emails.filter((e) => e.direction === "received" && !e.read).length;
 
   async function handleSelect(email: EmailItem) {
     setSelected(email);
@@ -118,9 +129,11 @@ export default function AdminEmailPage() {
           <div>
             <h1 className="text-xl font-semibold tracking-tight">Email</h1>
             <p className="text-sm text-muted-foreground">
-              {unreadCount > 0
-                ? `${unreadCount} unread`
-                : "No unread emails"}
+              {inboundUnread > 0
+                ? `${inboundUnread} new incoming`
+                : unreadCount > 0
+                  ? `${unreadCount} unread`
+                  : "No unread emails"}
             </p>
           </div>
           <Button
@@ -130,7 +143,7 @@ export default function AdminEmailPage() {
             }}
             variant={view === "compose" ? "outline" : "default"}
           >
-            {view === "compose" ? "Back to Sent" : "Compose"}
+            {view === "compose" ? "Back to Inbox" : "Compose"}
           </Button>
         </div>
 
@@ -217,11 +230,22 @@ export default function AdminEmailPage() {
             <CardHeader>
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge
+                      variant={selected.direction === "received" ? "default" : "secondary"}
+                      className="text-[10px] px-1.5 py-0"
+                    >
+                      {selected.direction === "received" ? "Received" : "Sent"}
+                    </Badge>
+                  </div>
                   <CardTitle className="text-lg truncate">
                     {selected.subject}
                   </CardTitle>
                   <CardDescription className="mt-1">
-                    To: {selected.to} &middot;{" "}
+                    {selected.direction === "received"
+                      ? `From: ${selected.from || selected.fromName}`
+                      : `To: ${selected.to}`}
+                    {" "}&middot;{" "}
                     {new Date(selected.createdAt).toLocaleString()}
                   </CardDescription>
                 </div>
@@ -233,6 +257,17 @@ export default function AdminEmailPage() {
                   >
                     Mark {selected.read ? "unread" : "read"}
                   </Button>
+                  {selected.direction === "received" && (
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        setView("compose");
+                        setSelected(null);
+                      }}
+                    >
+                      Reply
+                    </Button>
+                  )}
                   <Button
                     variant="outline"
                     size="sm"
@@ -257,18 +292,44 @@ export default function AdminEmailPage() {
         ) : (
           /* ── Email list ── */
           <Card>
-            <CardContent className="p-0">
+            {/* Filter tabs */}
+            <div className="flex gap-1 px-4 pt-3">
+              {(["all", "received", "sent"] as Filter[]).map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                    filter === f
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-muted"
+                  }`}
+                >
+                  {f === "all" ? "All" : f === "received" ? "Inbox" : "Sent"}
+                  {f === "received" && inboundUnread > 0 && (
+                    <span className="ml-1.5 inline-flex items-center justify-center size-4 rounded-full bg-primary-foreground text-primary text-[10px]">
+                      {inboundUnread}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+
+            <CardContent className="p-0 mt-2">
               {loading ? (
                 <p className="p-6 text-sm text-muted-foreground">
                   Loading...
                 </p>
-              ) : emails.length === 0 ? (
+              ) : filtered.length === 0 ? (
                 <p className="p-6 text-sm text-muted-foreground">
-                  No emails sent yet. Click Compose to send your first email.
+                  {filter === "received"
+                    ? "No incoming emails yet."
+                    : filter === "sent"
+                      ? "No sent emails yet. Click Compose to send your first email."
+                      : "No emails yet. Click Compose to send your first email."}
                 </p>
               ) : (
                 <ul className="divide-y">
-                  {emails.map((email) => (
+                  {filtered.map((email) => (
                     <li key={email._id}>
                       <button
                         onClick={() => handleSelect(email)}
@@ -292,8 +353,16 @@ export default function AdminEmailPage() {
                                 !email.read ? "font-semibold" : "font-normal"
                               }`}
                             >
-                              {email.to}
+                              {email.direction === "received"
+                                ? email.from || email.fromName
+                                : email.to}
                             </span>
+                            <Badge
+                              variant={email.direction === "received" ? "default" : "secondary"}
+                              className="text-[10px] px-1.5 py-0 shrink-0"
+                            >
+                              {email.direction === "received" ? "In" : "Out"}
+                            </Badge>
                             {email.status === "failed" && (
                               <Badge
                                 variant="destructive"

@@ -2,15 +2,21 @@ import mongoose, { Schema, type InferSchemaType } from "mongoose";
 
 const emailSchema = new Schema(
   {
+    direction: {
+      type: String,
+      enum: ["sent", "received"],
+      default: "sent",
+    },
     to: { type: String, required: true },
+    from: { type: String },
     fromName: { type: String, default: "Sam" },
     subject: { type: String, required: true },
     body: { type: String, required: true },
-    htmlBody: { type: String, required: true },
+    htmlBody: { type: String },
     resendId: { type: String },
     status: {
       type: String,
-      enum: ["sent", "failed"],
+      enum: ["sent", "failed", "delivered"],
       default: "sent",
     },
     read: { type: Boolean, default: false },
