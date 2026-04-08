@@ -28,19 +28,32 @@ function LoginForm() {
 
     const formData = new FormData(e.currentTarget);
 
-    const result = await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        email: formData.get("email"),
+        password: formData.get("password"),
+        redirect: false,
+        callbackUrl,
+      });
 
-    if (result?.error) {
-      setError("Invalid email or password.");
+      if (!result) {
+        setError("No response from server.");
+        setLoading(false);
+        return;
+      }
+
+      if (result.error) {
+        setError("Invalid email or password.");
+        setLoading(false);
+        return;
+      }
+
+      router.push(result.url || callbackUrl);
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
       setLoading(false);
       return;
     }
-
-    router.push(callbackUrl);
   }
 
   return (
