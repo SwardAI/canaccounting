@@ -62,6 +62,7 @@ export default function AdminEmailPage() {
   const [view, setView] = useState<"inbox" | "compose">("inbox");
   const [filter, setFilter] = useState<Filter>("all");
   const [loading, setLoading] = useState(true);
+  const [replyTo, setReplyTo] = useState<{ email: string; subject: string } | null>(null);
   const [state, action, isPending] = useActionState(submitEmail, null);
 
   const loadEmails = useCallback(async () => {
@@ -135,7 +136,12 @@ export default function AdminEmailPage() {
           </div>
           <Button
             onClick={() => {
-              setView(view === "compose" ? "inbox" : "compose");
+              if (view === "compose") {
+                setView("inbox");
+              } else {
+                setReplyTo(null);
+                setView("compose");
+              }
               setSelected(null);
             }}
             variant={view === "compose" ? "outline" : "default"}
@@ -148,7 +154,9 @@ export default function AdminEmailPage() {
           /* ── Compose ── */
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">New Email</CardTitle>
+              <CardTitle className="text-lg">
+                {replyTo ? `Reply to ${replyTo.email}` : "New Email"}
+              </CardTitle>
               <CardDescription>
                 Send a custom email from your UnitedTax address.
               </CardDescription>
@@ -162,6 +170,8 @@ export default function AdminEmailPage() {
                     name="to"
                     type="email"
                     placeholder="client@example.com"
+                    defaultValue={replyTo?.email || ""}
+                    key={replyTo?.email || "new"}
                     required
                   />
                 </div>
@@ -186,6 +196,8 @@ export default function AdminEmailPage() {
                     id="subject"
                     name="subject"
                     placeholder="Subject line..."
+                    defaultValue={replyTo?.subject || ""}
+                    key={replyTo?.subject || "new"}
                     required
                   />
                 </div>
@@ -260,6 +272,12 @@ export default function AdminEmailPage() {
                     <Button
                       size="sm"
                       onClick={() => {
+                        setReplyTo({
+                          email: selected.from || selected.fromName,
+                          subject: selected.subject.startsWith("Re: ")
+                            ? selected.subject
+                            : `Re: ${selected.subject}`,
+                        });
                         setView("compose");
                         setSelected(null);
                       }}

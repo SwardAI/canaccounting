@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createSessionToken, COOKIE_NAME } from "@/lib/admin-auth";
+import { createSessionToken, COOKIE_NAME, getAdminSessionFromRequest } from "@/lib/admin-auth";
+
+// Check if already authenticated
+export async function GET(req: NextRequest) {
+  const session = await getAdminSessionFromRequest(req);
+  if (session) {
+    return NextResponse.json({ authenticated: true });
+  }
+  return NextResponse.json({ authenticated: false }, { status: 401 });
+}
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();

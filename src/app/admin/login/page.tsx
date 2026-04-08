@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,13 @@ function LoginForm() {
   const callbackUrl = searchParams.get("callbackUrl") || "/admin/email";
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // If already authed, redirect to email page
+  useEffect(() => {
+    fetch("/api/admin/login", { method: "GET" }).then((res) => {
+      if (res.ok) router.replace(callbackUrl);
+    });
+  }, [router, callbackUrl]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
