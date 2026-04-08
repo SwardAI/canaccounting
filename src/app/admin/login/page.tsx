@@ -1,6 +1,5 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
@@ -28,32 +27,23 @@ function LoginForm() {
 
     const formData = new FormData(e.currentTarget);
 
-    try {
-      const result = await signIn("credentials", {
+    const res = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         email: formData.get("email"),
         password: formData.get("password"),
-        redirect: false,
-        callbackUrl,
-      });
+      }),
+    });
 
-      if (!result) {
-        setError("No response from server.");
-        setLoading(false);
-        return;
-      }
-
-      if (result.error) {
-        setError("Invalid email or password.");
-        setLoading(false);
-        return;
-      }
-
-      router.push(result.url || callbackUrl);
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error || "Login failed.");
       setLoading(false);
       return;
     }
+
+    router.push(callbackUrl);
   }
 
   return (
