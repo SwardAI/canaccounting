@@ -2,6 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Email } from "@/models/Email";
 
+async function fetchEmailBody(emailId: string): Promise<{ text: string; html: string }> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key || !emailId) return { text: "", html: "" };
+
+  try {
+    const res = await fetch(`https://api.resend.com/emails/${emailId}`, {
+      headers: { Authorization: `Bearer ${key}` },
+    });
+    if (!res.ok) return { text: "", html: "" };
+    const data = await res.json();
+    return { text: data.text || "", html: data.html || "" };
+  } catch {
+    return { text: "", html: "" };
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
@@ -13,9 +29,19 @@ export async function POST(req: NextRequest) {
       const fromEmail = data.from || "unknown";
       const toEmail = Array.isArray(data.to) ? data.to[0] : data.to || "sam@unitedtax.us";
       const subject = data.subject || "(no subject)";
-      // Resend may send body as text, html, or neither in the webhook
-      const body = data.text || data.html || data.body || subject;
-      const htmlBody = data.html || "";
+      const emailId = data.email_id;
+
+      // Try to get body from webhook payload first, then fetch from API
+      let body = data.text || data.html || data.body || "";
+      let htmlBody = data.html || "";
+
+      if (!body && emailId) {
+        const fetched = await fetchEmailBody(emailId);
+        body = fetched.text || fetched.html || "";
+        htmlBody = fetched.html || "";
+      }
+
+      if (!body) body = "(no content)";
 
       await Email.create({
         direction: "received",
@@ -25,6 +51,7 @@ export async function POST(req: NextRequest) {
         subject,
         body,
         htmlBody,
+        resendId: emailId,
         status: "delivered",
         read: false,
       });
