@@ -131,3 +131,42 @@ export async function markEmailUnread(id: string) {
   await connectDB();
   await Email.findByIdAndUpdate(id, { read: false });
 }
+
+export async function refetchEmailContent(id: string) {
+  await connectDB();
+  const email = await Email.findById(id);
+  if (!email || !email.resendId) {
+    return { success: false, error: "No Resend ID found for this email." };
+  }
+
+  const key = process.env.RESEND_API_KEY;
+  if (!key) {
+    return { success: false, error: "RESEND_API_KEY not configured." };
+  }
+
+  try {
+    const res = await fetch(
+      `https://api.resend.com/emails/receiving/${email.resendId}`,
+      { headers: { Authorization: `Bearer ${key}` } }
+    );
+    if (!res.ok) {
+      return { success: false, error: `Resend API returned ${res.status}` };
+    }
+    const data = await res.json();
+    const body = data.text || "";
+    const htmlBody = data.html || "";
+
+    if (!body && !htmlBody) {
+      return { success: false, error: "Resend returned empty content." };
+    }
+
+    await Email.findByIdAndUpdate(id, {
+      body: body || htmlBody,
+      htmlBody,
+    });
+    return { success: true, body: body || htmlBody };
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    return { success: false, error: message };
+  }
+}

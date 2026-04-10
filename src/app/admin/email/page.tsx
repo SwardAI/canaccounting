@@ -6,6 +6,7 @@ import {
   getEmails,
   markEmailRead,
   markEmailUnread,
+  refetchEmailContent,
 } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -301,9 +302,34 @@ export default function AdminEmailPage() {
                   Failed: {selected.error}
                 </div>
               )}
-              <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/80">
-                {selected.body}
-              </div>
+              {selected.body === "(no content)" && selected.direction === "received" ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground italic">(no content)</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={async () => {
+                      const result = await refetchEmailContent(selected._id);
+                      if (result.success && result.body) {
+                        setSelected({ ...selected, body: result.body });
+                        setEmails((prev) =>
+                          prev.map((e) =>
+                            e._id === selected._id
+                              ? { ...e, body: result.body! }
+                              : e
+                          )
+                        );
+                      }
+                    }}
+                  >
+                    Refetch content from Resend
+                  </Button>
+                </div>
+              ) : (
+                <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/80">
+                  {selected.body}
+                </div>
+              )}
             </CardContent>
           </Card>
         ) : (
