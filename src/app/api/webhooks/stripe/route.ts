@@ -56,13 +56,13 @@ export async function POST(req: NextRequest) {
           console.error("Failed to send confirmation email:", err);
         }
 
-        // Email 2: Personal intro from Can (sent after short delay)
-        try {
-          await sendIntroductionEmail(customerEmail, planName);
-          console.log(`Introduction email sent to ${customerEmail}`);
-        } catch (err) {
-          console.error("Failed to send introduction email:", err);
-        }
+        // Email 2: Personal intro — disabled for now
+        // try {
+        //   await sendIntroductionEmail(customerEmail, planName);
+        //   console.log(`Introduction email sent to ${customerEmail}`);
+        // } catch (err) {
+        //   console.error("Failed to send introduction email:", err);
+        // }
       }
 
       // Notify admin

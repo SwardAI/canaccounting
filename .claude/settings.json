@@ -9,7 +9,9 @@
       "Bash(node -e ':*)",
       "Bash(npm uninstall:*)",
       "WebFetch(domain:resend.com)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(stripe --version)",
+      "Bash(winget install:*)"
     ],
     "additionalDirectories": [
       "c:\\Users\\samue\\nextprojects\\canaccount\\src\\app\\api\\auth"
