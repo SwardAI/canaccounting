@@ -18,6 +18,30 @@ async function fetchReceivedEmailBody(emailId: string): Promise<{ text: string; 
   }
 }
 
+type AttachmentMeta = { resendId: string; filename: string; size: number; contentType: string };
+
+async function fetchReceivedAttachments(emailId: string): Promise<AttachmentMeta[]> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key || !emailId) return [];
+
+  try {
+    const res = await fetch(`https://api.resend.com/emails/receiving/${emailId}/attachments`, {
+      headers: { Authorization: `Bearer ${key}` },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    const items: Array<{ id: string; filename: string; size: number; content_type: string }> = json.data || [];
+    return items.map((a) => ({
+      resendId: a.id,
+      filename: a.filename,
+      size: a.size,
+      contentType: a.content_type,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
@@ -31,14 +55,19 @@ export async function POST(req: NextRequest) {
       const subject = data.subject || "(no subject)";
       const emailId = data.email_id;
 
-      // Webhook only sends metadata — fetch body from Received Emails API
+      // Webhook only sends metadata — fetch body + attachments from Received Emails API
       let body = "";
       let htmlBody = "";
+      let attachments: AttachmentMeta[] = [];
 
       if (emailId) {
-        const fetched = await fetchReceivedEmailBody(emailId);
+        const [fetched, fetchedAttachments] = await Promise.all([
+          fetchReceivedEmailBody(emailId),
+          fetchReceivedAttachments(emailId),
+        ]);
         body = fetched.text || "";
         htmlBody = fetched.html || "";
+        attachments = fetchedAttachments;
       }
 
       // Fallback: try webhook payload fields (unlikely to contain body)
@@ -57,6 +86,7 @@ export async function POST(req: NextRequest) {
         subject,
         body,
         htmlBody,
+        attachments,
         resendId: emailId,
         status: "delivered",
         read: false,

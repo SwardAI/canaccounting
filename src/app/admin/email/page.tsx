@@ -7,6 +7,7 @@ import {
   markEmailRead,
   markEmailUnread,
   refetchEmailContent,
+  getAttachmentDownloadUrl,
 } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,13 @@ import {
   CardContent,
 } from "@/components/ui/card";
 
+type Attachment = {
+  resendId: string;
+  filename: string;
+  size: number;
+  contentType: string;
+};
+
 type EmailItem = {
   _id: string;
   direction: string;
@@ -29,6 +37,8 @@ type EmailItem = {
   fromName: string;
   subject: string;
   body: string;
+  resendId?: string;
+  attachments?: Attachment[];
   status: string;
   read: boolean;
   error?: string;
@@ -42,6 +52,12 @@ async function submitEmail(
   formData: FormData
 ): Promise<SendState> {
   return sendCustomEmail(formData);
+}
+
+function formatBytes(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 function timeAgo(iso: string) {
@@ -310,13 +326,16 @@ export default function AdminEmailPage() {
                     size="sm"
                     onClick={async () => {
                       const result = await refetchEmailContent(selected._id);
-                      if (result.success && result.body) {
-                        setSelected({ ...selected, body: result.body });
+                      if (result.success) {
+                        const updated = {
+                          ...selected,
+                          body: result.body || selected.body,
+                          attachments: result.attachments || selected.attachments,
+                        };
+                        setSelected(updated);
                         setEmails((prev) =>
                           prev.map((e) =>
-                            e._id === selected._id
-                              ? { ...e, body: result.body! }
-                              : e
+                            e._id === selected._id ? { ...e, ...updated } : e
                           )
                         );
                       }
@@ -328,6 +347,46 @@ export default function AdminEmailPage() {
               ) : (
                 <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/80">
                   {selected.body}
+                </div>
+              )}
+
+              {/* Attachments */}
+              {selected.attachments && selected.attachments.length > 0 && (
+                <div className="mt-6 border-t pt-4">
+                  <p className="text-xs font-medium text-muted-foreground mb-2">
+                    Attachments ({selected.attachments.length})
+                  </p>
+                  <div className="space-y-2">
+                    {selected.attachments.map((att) => (
+                      <div
+                        key={att.resendId}
+                        className="flex items-center gap-3 rounded-md border px-3 py-2"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium truncate">{att.filename}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatBytes(att.size)} &middot; {att.contentType}
+                          </p>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={async () => {
+                            if (!selected.resendId) return;
+                            const result = await getAttachmentDownloadUrl(
+                              selected.resendId,
+                              att.resendId
+                            );
+                            if (result.success && result.url) {
+                              window.open(result.url, "_blank");
+                            }
+                          }}
+                        >
+                          Download
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </CardContent>
@@ -406,6 +465,11 @@ export default function AdminEmailPage() {
                             >
                               {email.direction === "received" ? "In" : "Out"}
                             </Badge>
+                            {email.attachments && email.attachments.length > 0 && (
+                              <span className="shrink-0 text-xs text-muted-foreground" title="Has attachments">
+                                📎
+                              </span>
+                            )}
                             {email.status === "failed" && (
                               <Badge
                                 variant="destructive"

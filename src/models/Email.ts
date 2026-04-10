@@ -13,6 +13,14 @@ const emailSchema = new Schema(
     subject: { type: String, required: true },
     body: { type: String, default: "" },
     htmlBody: { type: String, default: "" },
+    attachments: [
+      {
+        resendId: { type: String },
+        filename: { type: String },
+        size: { type: Number },
+        contentType: { type: String },
+      },
+    ],
     resendId: { type: String },
     status: {
       type: String,

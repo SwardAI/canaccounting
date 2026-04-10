@@ -115,6 +115,15 @@ export async function getEmails() {
     fromName: e.fromName,
     subject: e.subject,
     body: e.body,
+    resendId: e.resendId,
+    attachments: (e.attachments || []).map(
+      (a: { resendId?: string; filename?: string; size?: number; contentType?: string }) => ({
+        resendId: a.resendId || "",
+        filename: a.filename || "",
+        size: a.size || 0,
+        contentType: a.contentType || "",
+      })
+    ),
     status: e.status,
     read: e.read,
     error: e.error,
@@ -145,26 +154,67 @@ export async function refetchEmailContent(id: string) {
   }
 
   try {
-    const res = await fetch(
-      `https://api.resend.com/emails/receiving/${email.resendId}`,
-      { headers: { Authorization: `Bearer ${key}` } }
-    );
-    if (!res.ok) {
-      return { success: false, error: `Resend API returned ${res.status}` };
+    const headers = { Authorization: `Bearer ${key}` };
+    const [emailRes, attachRes] = await Promise.all([
+      fetch(`https://api.resend.com/emails/receiving/${email.resendId}`, { headers }),
+      fetch(`https://api.resend.com/emails/receiving/${email.resendId}/attachments`, { headers }),
+    ]);
+
+    if (!emailRes.ok) {
+      return { success: false, error: `Resend API returned ${emailRes.status}` };
     }
-    const data = await res.json();
+    const data = await emailRes.json();
     const body = data.text || "";
     const htmlBody = data.html || "";
 
-    if (!body && !htmlBody) {
+    let attachments: { resendId: string; filename: string; size: number; contentType: string }[] = [];
+    if (attachRes.ok) {
+      const attachJson = await attachRes.json();
+      attachments = (attachJson.data || []).map(
+        (a: { id: string; filename: string; size: number; content_type: string }) => ({
+          resendId: a.id,
+          filename: a.filename,
+          size: a.size,
+          contentType: a.content_type,
+        })
+      );
+    }
+
+    if (!body && !htmlBody && attachments.length === 0) {
       return { success: false, error: "Resend returned empty content." };
     }
 
     await Email.findByIdAndUpdate(id, {
-      body: body || htmlBody,
+      body: body || htmlBody || "(no content)",
       htmlBody,
+      attachments,
     });
-    return { success: true, body: body || htmlBody };
+    return { success: true, body: body || htmlBody, attachments };
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    return { success: false, error: message };
+  }
+}
+
+export async function getAttachmentDownloadUrl(emailResendId: string, attachmentResendId: string) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return { success: false, error: "RESEND_API_KEY not configured." };
+
+  try {
+    const res = await fetch(
+      `https://api.resend.com/emails/receiving/${emailResendId}/attachments`,
+      { headers: { Authorization: `Bearer ${key}` } }
+    );
+    if (!res.ok) return { success: false, error: `Resend returned ${res.status}` };
+
+    const json = await res.json();
+    const match = (json.data || []).find(
+      (a: { id: string }) => a.id === attachmentResendId
+    );
+    if (!match?.download_url) {
+      return { success: false, error: "Attachment not found." };
+    }
+    return { success: true, url: match.download_url as string };
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     return { success: false, error: message };
