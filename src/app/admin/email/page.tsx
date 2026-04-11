@@ -233,6 +233,20 @@ export default function AdminEmailPage() {
                   </p>
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="attachments">Attachments</Label>
+                  <Input
+                    id="attachments"
+                    name="attachments"
+                    type="file"
+                    multiple
+                    className="cursor-pointer"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Optional — select one or more files to attach.
+                  </p>
+                </div>
+
                 <Button type="submit" disabled={isPending} size="lg">
                   {isPending ? "Sending..." : "Send Email"}
                 </Button>

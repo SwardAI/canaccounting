@@ -47,6 +47,16 @@ export async function sendCustomEmail(formData: FormData) {
 
   await connectDB();
 
+  // Process file attachments
+  const attachmentFiles: { filename: string; content: Buffer }[] = [];
+  const files = formData.getAll("attachments") as File[];
+  for (const file of files) {
+    if (file && file.size > 0) {
+      const buffer = Buffer.from(await file.arrayBuffer());
+      attachmentFiles.push({ filename: file.name, content: buffer });
+    }
+  }
+
   try {
     const result = await resend.emails.send({
       from: `${fromName} <${ADMIN_EMAIL}>`,
@@ -54,6 +64,7 @@ export async function sendCustomEmail(formData: FormData) {
       replyTo: ADMIN_EMAIL,
       subject,
       html: fullHtml,
+      ...(attachmentFiles.length > 0 && { attachments: attachmentFiles }),
     });
 
     if (result.error) {
